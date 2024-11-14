@@ -1,10 +1,13 @@
 package br.com.alura.Literalura.principal;
 
+import br.com.alura.Literalura.service.ConsumoApi;
+
 import java.util.Scanner;
 
 public class Principal {
 
     private Scanner leitura = new Scanner(System.in);
+    private ConsumoApi consumo = new ConsumoApi();
 
     public void exibeMenu() {
         var opcao = -1;
@@ -21,7 +24,6 @@ public class Principal {
                 5 - Listar livros em um determinado idioma
                 0 - Sair
                 -----------------------------
-                
                 """;
 
         while (opcao != 0) {
@@ -31,6 +33,7 @@ public class Principal {
             switch (opcao){
                 case 1:
                     System.out.println("Caso 1");
+                    buscarLivroTitulo();
                     break;
                 case 2:
                     System.out.println("Caso 2");
@@ -51,5 +54,10 @@ public class Principal {
                     System.out.println("Não existe essa opção, tente novamente.");
             }
         }
+    }
+
+    private void buscarLivroTitulo() {
+        String json = consumo.obterDados("https://gutendex.com/books/?search=dom+casmurro");
+        System.out.println(json);
     }
 }
