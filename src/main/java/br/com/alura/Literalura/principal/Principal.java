@@ -1,13 +1,15 @@
 package br.com.alura.Literalura.principal;
 
+import br.com.alura.Literalura.model.DadosLivro;
 import br.com.alura.Literalura.service.ConsumoApi;
+import br.com.alura.Literalura.service.ConverteDados;
 
 import java.util.Scanner;
 
 public class Principal {
 
     private Scanner leitura = new Scanner(System.in);
-    private ConsumoApi consumo = new ConsumoApi();
+
 
     public void exibeMenu() {
         var opcao = -1;
@@ -57,7 +59,11 @@ public class Principal {
     }
 
     private void buscarLivroTitulo() {
-        String json = consumo.obterDados("https://gutendex.com/books/?search=dom+casmurro");
+        ConverteDados conversor = new ConverteDados();
+        ConsumoApi consumoApi = new ConsumoApi();
+        String json = consumoApi.obterDados("https://gutendex.com/books/?search=dom+casmurro");
         System.out.println(json);
+        DadosLivro dadosLivro = conversor.obterDados(json, DadosLivro.class);
+        System.out.println(dadosLivro);
     }
 }
