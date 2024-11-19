@@ -54,6 +54,7 @@ public class Principal {
                         break;
                     case 5:
                         System.out.println("Caso 5");
+                        listarLivrosIdioma();
                         break;
                     case 0:
                         System.out.println("Saindo do sistema ...");
@@ -78,7 +79,6 @@ public class Principal {
         System.out.println("Digite um livro para ser procurado");
         String livroProcurado = leitura.nextLine();
         String json = consumoApi.obterDados("https://gutendex.com/books/?search=" + livroProcurado.replace(" ", "+"));
-        System.out.println(json);
         try {
             RespostaLivros resposta = conversor.obterDados(json, RespostaLivros.class);
             dadosLivro = resposta.results().get(0);
@@ -97,10 +97,30 @@ public class Principal {
     }
 
     private void listarLivrosRegistrados() {
-        System.out.println(listaLivros);
+        listaLivros.forEach(System.out::println);
     }
     private void listarAutoresRegistrados() {
-        System.out.println(listaAutor);
+        listaAutor.forEach(System.out::println);
+    }
+
+    private void listarLivrosIdioma() {
+        String menuIdiomas = """
+                Insira o idioma para realizar a busca:
+                es -  espanhol
+                en - inglês
+                fr - francês
+                pt - português
+                """;
+        System.out.println(menuIdiomas);
+        String idiomaSelecionado = leitura.nextLine();
+        List<Livro> listaLivrosIdiomaSelecionado = listaLivros.stream().filter(l -> l.getLingua().equalsIgnoreCase(idiomaSelecionado)).toList();
+        if (listaLivrosIdiomaSelecionado.isEmpty()){
+            System.out.println("Não existe livros nesse idioma, tente novamente");
+        } else {
+            System.out.println("Livros em " + idiomaSelecionado + ": ");
+            listaLivrosIdiomaSelecionado.forEach(System.out::println);
+        }
+
     }
 
 }
