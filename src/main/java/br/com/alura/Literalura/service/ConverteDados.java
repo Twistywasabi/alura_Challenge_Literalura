@@ -1,5 +1,6 @@
 package br.com.alura.Literalura.service;
 
+import br.com.alura.Literalura.model.DadosLivro;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ConverteDados implements IConverteDados{
 
     private ObjectMapper mapper = new ObjectMapper();
-    JsonNode node = mapper.createObjectNode();
 
     @Override
     public <T> T obterDados(String json, Class<T> classe) {

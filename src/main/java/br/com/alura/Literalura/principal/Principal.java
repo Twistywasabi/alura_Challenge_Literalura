@@ -1,15 +1,20 @@
 package br.com.alura.Literalura.principal;
 
-import br.com.alura.Literalura.model.DadosLivro;
+import br.com.alura.Literalura.model.*;
 import br.com.alura.Literalura.service.ConsumoApi;
 import br.com.alura.Literalura.service.ConverteDados;
 
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Principal {
 
     private Scanner leitura = new Scanner(System.in);
-
+    private DadosLivro dadosLivro;
+    private List<Livro> listaLivros = new ArrayList<>();
+    private List<Autor> listaAutor = new ArrayList<>();
 
     public void exibeMenu() {
         var opcao = -1;
@@ -30,40 +35,60 @@ public class Principal {
 
         while (opcao != 0) {
             System.out.println(menu);
-            opcao = leitura.nextInt();
-            leitura.nextLine();
-            switch (opcao){
-                case 1:
-                    System.out.println("Caso 1");
-                    buscarLivroTitulo();
-                    break;
-                case 2:
-                    System.out.println("Caso 2");
-                    break;
-                case 3:
-                    System.out.println("Caso 3");
-                    break;
-                case 4:
-                    System.out.println("Caso 4");
-                    break;
-                case 5:
-                    System.out.println("Caso 5");
-                    break;
-                case 0:
-                    System.out.println("Saindo do sistema ...");
-                    break;
-                default:
-                    System.out.println("Não existe essa opção, tente novamente.");
+            try {
+                opcao = leitura.nextInt();
+                leitura.nextLine();
+                switch (opcao){
+                    case 1:
+                        System.out.println("Caso 1");
+                        buscarLivroTitulo();
+                        break;
+                    case 2:
+                        System.out.println("Caso 2");
+                        break;
+                    case 3:
+                        System.out.println("Caso 3");
+                        break;
+                    case 4:
+                        System.out.println("Caso 4");
+                        break;
+                    case 5:
+                        System.out.println("Caso 5");
+                        break;
+                    case 0:
+                        System.out.println("Saindo do sistema ...");
+                        break;
+                    default:
+                        System.out.println("Não existe essa opção, tente novamente.");
+                }
+            } catch (InputMismatchException e) {
+                leitura.nextLine();
+                System.out.println("Só vale caracteres numéricos de 0 a 5, tente novamente.");
             }
+
         }
     }
 
     private void buscarLivroTitulo() {
-        ConverteDados conversor = new ConverteDados();
         ConsumoApi consumoApi = new ConsumoApi();
-        String json = consumoApi.obterDados("https://gutendex.com/books/?search=dom+casmurro");
+        ConverteDados conversor = new ConverteDados();
+        System.out.println("Digite um livro para ser procurado");
+        String livroProcurado = leitura.nextLine();
+        String json = consumoApi.obterDados("https://gutendex.com/books/?search=" + livroProcurado.replace(" ", "+"));
         System.out.println(json);
-        DadosLivro dadosLivro = conversor.obterDados(json, DadosLivro.class);
-        System.out.println(dadosLivro);
+        try {
+            RespostaLivros resposta = conversor.obterDados(json, RespostaLivros.class);
+            dadosLivro = resposta.results().get(0);
+            System.out.println(dadosLivro);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Nenhum livro encontrado");
+        }
+
+        Livro livroEncontrado = new Livro(dadosLivro);
+        listaLivros.add(livroEncontrado);
+        System.out.println(listaLivros);
+
+
+
     }
 }

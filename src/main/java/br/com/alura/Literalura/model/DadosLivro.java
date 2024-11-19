@@ -4,11 +4,16 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record DadosLivro(
-        @JsonAlias("title") String titulo,
-        @JsonAlias("name") String autor,
-        @JsonAlias("languages") String idioma,
-        @JsonAlias("download_count") long numeroDownload) {
+
+        @JsonProperty("title") String title,
+        @JsonProperty("languages") List<String> languages,
+        @JsonProperty("authors") List<DadosAutor> authors,
+        @JsonProperty("download_count") int downloadNumber
+
+        ) {
 }
