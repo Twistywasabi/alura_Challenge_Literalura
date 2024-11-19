@@ -2,6 +2,7 @@ package br.com.alura.Literalura.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Autor {
@@ -10,10 +11,13 @@ public class Autor {
     private int anoFalecimento;
     private List<String> livros;
 
+    public Autor(){};
+
     public Autor(DadosAutor dadosAutor) {
         this.nome = dadosAutor.name();
         this.anoNascimento = dadosAutor.birthYear();
         this.anoFalecimento = dadosAutor.deathYear();
+        this.livros = new ArrayList<>();
     }
 
     public void adicionarLivro(Livro livroAdicionado){

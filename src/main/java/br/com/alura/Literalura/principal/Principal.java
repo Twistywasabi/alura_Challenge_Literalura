@@ -15,6 +15,7 @@ public class Principal {
     private DadosLivro dadosLivro;
     private List<Livro> listaLivros = new ArrayList<>();
     private List<Autor> listaAutor = new ArrayList<>();
+    private DadosAutor dadosAutor;
 
     public void exibeMenu() {
         var opcao = -1;
@@ -40,14 +41,13 @@ public class Principal {
                 leitura.nextLine();
                 switch (opcao){
                     case 1:
-                        System.out.println("Caso 1");
                         buscarLivroTitulo();
                         break;
                     case 2:
-                        System.out.println("Caso 2");
+                        listarLivrosRegistrados();
                         break;
                     case 3:
-                        System.out.println("Caso 3");
+                        listarAutoresRegistrados();
                         break;
                     case 4:
                         System.out.println("Caso 4");
@@ -69,6 +69,9 @@ public class Principal {
         }
     }
 
+
+
+
     private void buscarLivroTitulo() {
         ConsumoApi consumoApi = new ConsumoApi();
         ConverteDados conversor = new ConverteDados();
@@ -80,15 +83,24 @@ public class Principal {
             RespostaLivros resposta = conversor.obterDados(json, RespostaLivros.class);
             dadosLivro = resposta.results().get(0);
             System.out.println(dadosLivro);
+            Livro livroEncontrado = new Livro(dadosLivro);
+            listaLivros.add(livroEncontrado);
+            dadosAutor = dadosLivro.authors().get(0);
+            Autor autorEncontrado = new Autor(dadosAutor);
+            autorEncontrado.adicionarLivro(livroEncontrado);
+            listaAutor.add(autorEncontrado);
+            System.out.println("Livro adicionado");
+
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Nenhum livro encontrado");
         }
-
-        Livro livroEncontrado = new Livro(dadosLivro);
-        listaLivros.add(livroEncontrado);
-        System.out.println(listaLivros);
-
-
-
     }
+
+    private void listarLivrosRegistrados() {
+        System.out.println(listaLivros);
+    }
+    private void listarAutoresRegistrados() {
+        System.out.println(listaAutor);
+    }
+
 }
