@@ -50,10 +50,9 @@ public class Principal {
                         listarAutoresRegistrados();
                         break;
                     case 4:
-                        System.out.println("Caso 4");
+                        listarAutoresVivos();
                         break;
                     case 5:
-                        System.out.println("Caso 5");
                         listarLivrosIdioma();
                         break;
                     case 0:
@@ -69,7 +68,6 @@ public class Principal {
 
         }
     }
-
 
 
 
@@ -103,6 +101,19 @@ public class Principal {
         listaAutor.forEach(System.out::println);
     }
 
+    private void listarAutoresVivos() {
+        System.out.println("Insira o ano que deseja pesquisar: ");
+        int anoPesquisado = leitura.nextInt();
+        leitura.nextLine();
+        List<Autor> listaAutoresVivos = listaAutor.stream().filter(a -> a.getAnoNascimento() <= anoPesquisado && a.getAnoFalecimento() >= anoPesquisado).toList();
+        if (listaAutoresVivos.isEmpty()) {
+            System.out.println("Não existe autores vivos nesse ano no banco de dados, tente novamente");
+        } else {
+            System.out.println("Autores vivos em '" + anoPesquisado + "': ");
+            listaAutoresVivos.forEach(System.out::println);
+        }
+    }
+
     private void listarLivrosIdioma() {
         String menuIdiomas = """
                 Insira o idioma para realizar a busca:
@@ -117,7 +128,7 @@ public class Principal {
         if (listaLivrosIdiomaSelecionado.isEmpty()){
             System.out.println("Não existe livros nesse idioma, tente novamente");
         } else {
-            System.out.println("Livros em " + idiomaSelecionado + ": ");
+            System.out.println("Livros em '" + idiomaSelecionado + "': ");
             listaLivrosIdiomaSelecionado.forEach(System.out::println);
         }
 
