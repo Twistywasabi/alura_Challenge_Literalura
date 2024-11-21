@@ -124,7 +124,8 @@ public class Principal {
                 """;
         System.out.println(menuIdiomas);
         String idiomaSelecionado = leitura.nextLine();
-        List<Livro> listaLivrosIdiomaSelecionado = listaLivros.stream().filter(l -> l.getLingua().equalsIgnoreCase(idiomaSelecionado)).toList();
+        Categoria categoriaSelecionado = Categoria.fromString(idiomaSelecionado);
+        List<Livro> listaLivrosIdiomaSelecionado = listaLivros.stream().filter(l -> l.getLingua().equals(categoriaSelecionado)).toList();
         if (listaLivrosIdiomaSelecionado.isEmpty()){
             System.out.println("Não existe livros nesse idioma, tente novamente");
         } else {
