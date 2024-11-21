@@ -129,7 +129,7 @@ public class Principal {
         if (listaLivrosIdiomaSelecionado.isEmpty()){
             System.out.println("Não existe livros nesse idioma, tente novamente");
         } else {
-            System.out.println("Livros em '" + idiomaSelecionado + "': ");
+            System.out.println("Livros em '" + categoriaSelecionado + "': ");
             listaLivrosIdiomaSelecionado.forEach(System.out::println);
         }
 
