@@ -3,7 +3,7 @@ package br.com.alura.Literalura.model;
 public class Livro {
     private String titulo;
     private Categoria lingua;
-    private String autor;
+    private Autor autor;
     private int numeroDownload;
 
     public Livro(){}
@@ -11,8 +11,11 @@ public class Livro {
     public Livro(DadosLivro dadosLivro) {
         this.titulo = dadosLivro.title();
         this.lingua = Categoria.fromString(dadosLivro.languages().get(0));
-        this.autor = dadosLivro.authors().get(0).name();
         this.numeroDownload = dadosLivro.downloadNumber();
+    }
+
+    public void adicionarAutor(Autor autorAdicionado) {
+        this.autor = autorAdicionado;
     }
 
     public String getTitulo() {
@@ -31,11 +34,11 @@ public class Livro {
         this.lingua = lingua;
     }
 
-    public String getAutor() {
+    public Autor getAutor() {
         return autor;
     }
 
-    public void setAutor(String autor) {
+    public void setAutor(Autor autor) {
         this.autor = autor;
     }
 
@@ -51,7 +54,7 @@ public class Livro {
     public String toString() {
         return "titulo='" + titulo + '\'' +
                 ", lingua='" + lingua + '\'' +
-                ", autor='" + autor + '\'' +
+                ", autor='" + autor.getNome() + '\'' +
                 ", numeroDownload=" + numeroDownload;
     }
 }

@@ -80,12 +80,12 @@ public class Principal {
         try {
             RespostaLivros resposta = conversor.obterDados(json, RespostaLivros.class);
             dadosLivro = resposta.results().get(0);
-            System.out.println(dadosLivro);
-            Livro livroEncontrado = new Livro(dadosLivro);
-            listaLivros.add(livroEncontrado);
             dadosAutor = dadosLivro.authors().get(0);
+            Livro livroEncontrado = new Livro(dadosLivro);
             Autor autorEncontrado = new Autor(dadosAutor);
             autorEncontrado.adicionarLivro(livroEncontrado);
+            livroEncontrado.adicionarAutor(autorEncontrado);
+            listaLivros.add(livroEncontrado);
             listaAutor.add(autorEncontrado);
             System.out.println("Livro adicionado");
 

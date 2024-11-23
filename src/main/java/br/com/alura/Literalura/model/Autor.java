@@ -9,7 +9,7 @@ public class Autor {
     private String nome;
     private int anoNascimento;
     private int anoFalecimento;
-    private List<String> livros;
+    private List<Livro> livros = new ArrayList<>();
 
     public Autor(){};
 
@@ -17,11 +17,10 @@ public class Autor {
         this.nome = dadosAutor.name();
         this.anoNascimento = dadosAutor.birthYear();
         this.anoFalecimento = dadosAutor.deathYear();
-        this.livros = new ArrayList<>();
     }
 
     public void adicionarLivro(Livro livroAdicionado){
-        livros.add(livroAdicionado.getTitulo());
+        livros.add(livroAdicionado);
     }
 
     public String getNome() {
@@ -48,11 +47,11 @@ public class Autor {
         this.anoFalecimento = anoFalecimento;
     }
 
-    public List<String> getLivros() {
+    public List<Livro> getLivros() {
         return livros;
     }
 
-    public void setLivros(List<String> livros) {
+    public void setLivros(List<Livro> livros) {
         this.livros = livros;
     }
 
@@ -61,6 +60,6 @@ public class Autor {
         return "nome='" + nome + '\'' +
                 ", anoNascimento=" + anoNascimento +
                 ", anoFalecimento=" + anoFalecimento +
-                ", livros=" + livros;
+                ", livros=" + livros.get(0).getTitulo();
     }
 }
