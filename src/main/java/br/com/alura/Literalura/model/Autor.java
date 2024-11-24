@@ -1,14 +1,22 @@
 package br.com.alura.Literalura.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "autores")
 public class Autor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true)
     private String nome;
     private int anoNascimento;
     private int anoFalecimento;
+    @Transient
     private List<Livro> livros = new ArrayList<>();
 
     public Autor(){};
@@ -60,6 +68,6 @@ public class Autor {
         return "nome='" + nome + '\'' +
                 ", anoNascimento=" + anoNascimento +
                 ", anoFalecimento=" + anoFalecimento +
-                ", livros=" + livros.get(0).getTitulo();
+                ", livros='" + livros.get(0).getTitulo()+ '\'';
     }
 }

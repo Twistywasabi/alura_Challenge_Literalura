@@ -1,7 +1,11 @@
 package br.com.alura.Literalura.model;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 public class Livro {
     private String titulo;
+    //@Enumerated(EnumType.STRING)
     private Categoria lingua;
     private Autor autor;
     private int numeroDownload;

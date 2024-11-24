@@ -1,6 +1,7 @@
 package br.com.alura.Literalura.principal;
 
 import br.com.alura.Literalura.model.*;
+import br.com.alura.Literalura.repository.AutorRepository;
 import br.com.alura.Literalura.service.ConsumoApi;
 import br.com.alura.Literalura.service.ConverteDados;
 
@@ -13,9 +14,17 @@ public class Principal {
 
     private Scanner leitura = new Scanner(System.in);
     private DadosLivro dadosLivro;
+    private DadosAutor dadosAutor;
     private List<Livro> listaLivros = new ArrayList<>();
     private List<Autor> listaAutor = new ArrayList<>();
-    private DadosAutor dadosAutor;
+    private AutorRepository repositorio;
+
+
+    public Principal(AutorRepository repositorio) {
+
+        this.repositorio = repositorio;
+
+    }
 
     public void exibeMenu() {
         var opcao = -1;
@@ -85,8 +94,9 @@ public class Principal {
             Autor autorEncontrado = new Autor(dadosAutor);
             autorEncontrado.adicionarLivro(livroEncontrado);
             livroEncontrado.adicionarAutor(autorEncontrado);
-            listaLivros.add(livroEncontrado);
-            listaAutor.add(autorEncontrado);
+            repositorio.save(autorEncontrado);
+            //listaLivros.add(livroEncontrado);
+            //listaAutor.add(autorEncontrado);
             System.out.println("Livro adicionado");
 
         } catch (IndexOutOfBoundsException e) {
@@ -98,7 +108,8 @@ public class Principal {
         listaLivros.forEach(System.out::println);
     }
     private void listarAutoresRegistrados() {
-        listaAutor.forEach(System.out::println);
+        listaAutor = repositorio.findAll();
+        System.out.println(listaAutor);
     }
 
     private void listarAutoresVivos() {
