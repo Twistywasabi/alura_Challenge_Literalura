@@ -16,7 +16,7 @@ public class Autor {
     private String nome;
     private int anoNascimento;
     private int anoFalecimento;
-    @Transient
+    @OneToMany(mappedBy = "autor",cascade = CascadeType.ALL)
     private List<Livro> livros = new ArrayList<>();
 
     public Autor(){};

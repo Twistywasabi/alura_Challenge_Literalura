@@ -95,9 +95,8 @@ public class Principal {
             autorEncontrado.adicionarLivro(livroEncontrado);
             livroEncontrado.adicionarAutor(autorEncontrado);
             repositorio.save(autorEncontrado);
-            //listaLivros.add(livroEncontrado);
-            //listaAutor.add(autorEncontrado);
             System.out.println("Livro adicionado");
+
 
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Nenhum livro encontrado");
@@ -105,11 +104,11 @@ public class Principal {
     }
 
     private void listarLivrosRegistrados() {
-        listaLivros.forEach(System.out::println);
+        //listaLivros = repositorio.findAll().get(5);
     }
     private void listarAutoresRegistrados() {
-        List<Autor> autoresRegistrados = repositorio.findAll();
-        autoresRegistrados.forEach(System.out::println);
+        listaAutor = repositorio.findAll();
+        listaAutor.forEach(System.out::println);
     }
 
     private void listarAutoresVivos() {

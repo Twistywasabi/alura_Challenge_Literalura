@@ -1,12 +1,17 @@
 package br.com.alura.Literalura.model;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "livros")
 public class Livro {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String titulo;
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private Categoria lingua;
+    @ManyToOne
     private Autor autor;
     private int numeroDownload;
 
@@ -20,6 +25,14 @@ public class Livro {
 
     public void adicionarAutor(Autor autorAdicionado) {
         this.autor = autorAdicionado;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitulo() {
