@@ -67,7 +67,7 @@ public class Autor {
     public String toString() {
         return "nome='" + nome + '\'' +
                 ", anoNascimento=" + anoNascimento +
-                ", anoFalecimento=" + anoFalecimento +
-                ", livros='" + livros.get(0).getTitulo()+ '\'';
+                ", anoFalecimento=" + anoFalecimento /*+
+                ", livros='" + livros.get(0).getTitulo()+ '\''*/;
     }
 }

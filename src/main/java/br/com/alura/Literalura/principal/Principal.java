@@ -108,8 +108,8 @@ public class Principal {
         listaLivros.forEach(System.out::println);
     }
     private void listarAutoresRegistrados() {
-        listaAutor = repositorio.findAll();
-        System.out.println(listaAutor);
+        List<Autor> autoresRegistrados = repositorio.findAll();
+        autoresRegistrados.forEach(System.out::println);
     }
 
     private void listarAutoresVivos() {
