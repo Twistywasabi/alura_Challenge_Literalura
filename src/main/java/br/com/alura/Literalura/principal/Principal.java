@@ -5,10 +5,7 @@ import br.com.alura.Literalura.repository.AutorRepository;
 import br.com.alura.Literalura.service.ConsumoApi;
 import br.com.alura.Literalura.service.ConverteDados;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Principal {
 
@@ -94,9 +91,15 @@ public class Principal {
             Autor autorEncontrado = new Autor(dadosAutor);
             autorEncontrado.adicionarLivro(livroEncontrado);
             livroEncontrado.adicionarAutor(autorEncontrado);
-            repositorio.save(autorEncontrado);
-            System.out.println("Livro adicionado");
+            boolean verificarExistenciaAutor = repositorio.existsByNomeContainingIgnoreCase(autorEncontrado.getNome());
+            System.out.println(verificarExistenciaAutor);
+            if (verificarExistenciaAutor) {
+                System.out.println("Autor já existe");
+            } else {
+                repositorio.save(autorEncontrado);
+                System.out.println("Livro adicionado");
 
+            }
 
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Nenhum livro encontrado");
@@ -104,8 +107,8 @@ public class Principal {
     }
 
     private void listarLivrosRegistrados() {
-        //listaLivros = repositorio.findAll().get(5);
     }
+
     private void listarAutoresRegistrados() {
         listaAutor = repositorio.findAll();
         listaAutor.forEach(System.out::println);

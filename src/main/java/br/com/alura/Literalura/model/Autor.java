@@ -16,7 +16,7 @@ public class Autor {
     private String nome;
     private int anoNascimento;
     private int anoFalecimento;
-    @OneToMany(mappedBy = "autor",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "autor",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Livro> livros = new ArrayList<>();
 
     public Autor(){};
@@ -28,6 +28,7 @@ public class Autor {
     }
 
     public void adicionarLivro(Livro livroAdicionado){
+
         livros.add(livroAdicionado);
     }
 
@@ -67,7 +68,7 @@ public class Autor {
     public String toString() {
         return "nome='" + nome + '\'' +
                 ", anoNascimento=" + anoNascimento +
-                ", anoFalecimento=" + anoFalecimento /*+
-                ", livros='" + livros.get(0).getTitulo()+ '\''*/;
+                ", anoFalecimento=" + anoFalecimento +
+                ", livros='" + livros + '\'';
     }
 }
