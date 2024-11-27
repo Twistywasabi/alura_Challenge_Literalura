@@ -14,9 +14,11 @@ A API que disponibiliza os dados do livro vem do site https://gutendex.com/ (os 
 - Spring Initializr
     - Spring Data JPA
     - PostgreSQL Driver
+    - Spring Boot 3.3.5
 - PostgreSQL
 - Postman
 - Jackson 2.16.2
+- Maven
 - Gutendex (https://gutendex.com/)
 
 ## Resultados 🎁
