@@ -17,6 +17,7 @@ public class LiteraluraApplication implements CommandLineRunner {
 		SpringApplication.run(LiteraluraApplication.class, args);
 	}
 
+
 	@Override
 	public void run(String... args) throws Exception {
 		Principal principal = new Principal(repositorio);
