@@ -12,10 +12,9 @@ public class Principal {
     private Scanner leitura = new Scanner(System.in);
     private DadosLivro dadosLivro;
     private DadosAutor dadosAutor;
-    private List<Livro> listaLivros = new ArrayList<>();
-    private List<Autor> listaAutor = new ArrayList<>();
+    private List<Livro> listaLivros ;
+    private List<Autor> listaAutor ;
     private AutorRepository repositorio;
-
 
     public Principal(AutorRepository repositorio) {
 
@@ -24,6 +23,8 @@ public class Principal {
     }
 
     public void exibeMenu() {
+        listaLivros = repositorio.listaLivrosBanco();
+        listaAutor = repositorio.findAll();
         var opcao = -1;
 
         String menu = """
@@ -68,14 +69,12 @@ public class Principal {
                         System.out.println("Não existe essa opção, tente novamente.");
                 }
             } catch (InputMismatchException e) {
-                leitura.nextLine();
                 System.out.println("Só vale caracteres numéricos de 0 a 5, tente novamente.");
+                leitura.nextLine();
             }
 
         }
     }
-
-
 
     private void buscarLivroTitulo() {
         ConsumoApi consumoApi = new ConsumoApi();
@@ -91,14 +90,19 @@ public class Principal {
             Autor autorEncontrado = new Autor(dadosAutor);
             autorEncontrado.adicionarLivro(livroEncontrado);
             livroEncontrado.adicionarAutor(autorEncontrado);
-            boolean verificarExistenciaAutor = repositorio.existsByNomeContainingIgnoreCase(autorEncontrado.getNome());
-            System.out.println(verificarExistenciaAutor);
-            if (verificarExistenciaAutor) {
-                System.out.println("Autor já existe");
+            Optional<Autor> autorJaRegistrado = repositorio.findByNomeContainingIgnoreCase(autorEncontrado.getNome());
+            if (autorJaRegistrado.isPresent()) {
+                List<Livro> livrosBanco = repositorio.livrosJaRegistrados(livroEncontrado.getTitulo());
+                if (livrosBanco.isEmpty()){
+                    repositorio.inserirLivroAutorExistente(livroEncontrado.getTitulo(), livroEncontrado.getLingua().toString(), livroEncontrado.getNumeroDownload(), autorJaRegistrado.get().getId());
+                    System.out.println("Livro adicionado");
+
+                } else {
+                    System.out.println("Livro Já existe no banco de dados");
+                }
             } else {
                 repositorio.save(autorEncontrado);
-                System.out.println("Livro adicionado");
-
+                System.out.println("Autor e livro adicionado");
             }
 
         } catch (IndexOutOfBoundsException e) {
@@ -106,7 +110,11 @@ public class Principal {
         }
     }
 
+
     private void listarLivrosRegistrados() {
+        listaLivros = repositorio.listaLivrosBanco();
+        listaLivros.forEach(System.out::println);
+
     }
 
     private void listarAutoresRegistrados() {
@@ -116,6 +124,8 @@ public class Principal {
 
     private void listarAutoresVivos() {
         System.out.println("Insira o ano que deseja pesquisar: ");
+        try {
+
         int anoPesquisado = leitura.nextInt();
         leitura.nextLine();
         List<Autor> listaAutoresVivos = listaAutor.stream().filter(a -> a.getAnoNascimento() <= anoPesquisado && a.getAnoFalecimento() >= anoPesquisado).toList();
@@ -124,6 +134,10 @@ public class Principal {
         } else {
             System.out.println("Autores vivos em '" + anoPesquisado + "': ");
             listaAutoresVivos.forEach(System.out::println);
+        }
+        } catch (InputMismatchException e) {
+            System.out.println("Coloque somente números, não use letras");
+            leitura.nextLine();
         }
     }
 
@@ -144,8 +158,11 @@ public class Principal {
         } else {
             System.out.println("Livros em '" + categoriaSelecionado + "': ");
             listaLivrosIdiomaSelecionado.forEach(System.out::println);
+            System.out.println("Quantidade de livros em " + categoriaSelecionado + ": " + listaLivrosIdiomaSelecionado.stream().count());
         }
 
     }
+
+
 
 }
