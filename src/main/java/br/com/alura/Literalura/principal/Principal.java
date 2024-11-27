@@ -12,8 +12,8 @@ public class Principal {
     private Scanner leitura = new Scanner(System.in);
     private DadosLivro dadosLivro;
     private DadosAutor dadosAutor;
-    private List<Livro> listaLivros ;
-    private List<Autor> listaAutor ;
+    private List<Livro> listaLivros;
+    private List<Autor> listaAutor;
     private AutorRepository repositorio;
 
     public Principal(AutorRepository repositorio) {
@@ -28,10 +28,10 @@ public class Principal {
         var opcao = -1;
 
         String menu = """
-                
+                                
                 -----------------------------
                 Escolha o número de sua opção: 
-                
+                                
                 1 - Buscar livro pelo título
                 2 - Listar livros registrados
                 3 - Listar autores registrados
@@ -46,7 +46,7 @@ public class Principal {
             try {
                 opcao = leitura.nextInt();
                 leitura.nextLine();
-                switch (opcao){
+                switch (opcao) {
                     case 1:
                         buscarLivroTitulo();
                         break;
@@ -93,7 +93,7 @@ public class Principal {
             Optional<Autor> autorJaRegistrado = repositorio.findByNomeContainingIgnoreCase(autorEncontrado.getNome());
             if (autorJaRegistrado.isPresent()) {
                 List<Livro> livrosBanco = repositorio.livrosJaRegistrados(livroEncontrado.getTitulo());
-                if (livrosBanco.isEmpty()){
+                if (livrosBanco.isEmpty()) {
                     repositorio.inserirLivroAutorExistente(livroEncontrado.getTitulo(), livroEncontrado.getLingua().toString(), livroEncontrado.getNumeroDownload(), autorJaRegistrado.get().getId());
                     System.out.println("Livro adicionado");
 
@@ -119,22 +119,41 @@ public class Principal {
 
     private void listarAutoresRegistrados() {
         listaAutor = repositorio.findAll();
-        listaAutor.forEach(System.out::println);
+        System.out.println("Lista de Autores: ");
+        for (int i = 0; i < listaAutor.stream().count(); i++) {
+            System.out.println("");
+            System.out.println("****************************************");
+            System.out.println("Nome: " + listaAutor.get(i).getNome());
+            System.out.println("Ano de nascimento: " + listaAutor.get(i).getAnoNascimento());
+            System.out.println("Ano de falecimento: " + listaAutor.get(i).getAnoFalecimento());
+            System.out.println("Livros: ");
+            for (int j = 0; j < listaAutor.get(i).getLivros().stream().count(); j++) {
+                System.out.println("* " + listaAutor.get(i).getLivros().get(j).getTitulo());
+            }
+            System.out.println("****************************************");
+        }
     }
 
     private void listarAutoresVivos() {
         System.out.println("Insira o ano que deseja pesquisar: ");
         try {
 
-        int anoPesquisado = leitura.nextInt();
-        leitura.nextLine();
-        List<Autor> listaAutoresVivos = listaAutor.stream().filter(a -> a.getAnoNascimento() <= anoPesquisado && a.getAnoFalecimento() >= anoPesquisado).toList();
-        if (listaAutoresVivos.isEmpty()) {
-            System.out.println("Não existe autores vivos nesse ano no banco de dados, tente novamente");
-        } else {
-            System.out.println("Autores vivos em '" + anoPesquisado + "': ");
-            listaAutoresVivos.forEach(System.out::println);
-        }
+            int anoPesquisado = leitura.nextInt();
+            leitura.nextLine();
+            List<Autor> listaAutoresVivos = listaAutor.stream().filter(a -> a.getAnoNascimento() <= anoPesquisado && a.getAnoFalecimento() >= anoPesquisado).toList();
+            if (listaAutoresVivos.isEmpty()) {
+                System.out.println("Não existe autores vivos nesse ano no banco de dados, tente novamente");
+            } else {
+                System.out.println("Autores vivos em '" + anoPesquisado + "': ");
+                for (int i = 0; i < listaAutoresVivos.stream().count(); i++) {
+                    System.out.println("");
+                    System.out.println("****************************************");
+                    System.out.println("Nome: " + listaAutoresVivos.get(i).getNome());
+                    System.out.println("Ano de nascimento: " + listaAutoresVivos.get(i).getAnoNascimento());
+                    System.out.println("Ano de falecimento: " + listaAutoresVivos.get(i).getAnoFalecimento());
+                    System.out.println("****************************************");
+                }
+            }
         } catch (InputMismatchException e) {
             System.out.println("Coloque somente números, não use letras");
             leitura.nextLine();
@@ -150,19 +169,27 @@ public class Principal {
                 pt - português
                 """;
         System.out.println(menuIdiomas);
-        String idiomaSelecionado = leitura.nextLine();
-        Categoria categoriaSelecionado = Categoria.fromString(idiomaSelecionado);
-        List<Livro> listaLivrosIdiomaSelecionado = listaLivros.stream().filter(l -> l.getLingua().equals(categoriaSelecionado)).toList();
-        if (listaLivrosIdiomaSelecionado.isEmpty()){
-            System.out.println("Não existe livros nesse idioma, tente novamente");
-        } else {
-            System.out.println("Livros em '" + categoriaSelecionado + "': ");
-            listaLivrosIdiomaSelecionado.forEach(System.out::println);
-            System.out.println("Quantidade de livros em " + categoriaSelecionado + ": " + listaLivrosIdiomaSelecionado.stream().count());
+        try {
+
+            String idiomaSelecionado = leitura.nextLine();
+            Categoria categoriaSelecionado = Categoria.fromString(idiomaSelecionado);
+            List<Livro> listaLivrosIdiomaSelecionado = listaLivros.stream().filter(l -> l.getLingua().equals(categoriaSelecionado)).toList();
+            if (listaLivrosIdiomaSelecionado.isEmpty()) {
+                System.out.println("Não existe livros nesse idioma, tente novamente");
+            } else {
+                System.out.println("Livros em '" + categoriaSelecionado + "': ");
+                listaLivrosIdiomaSelecionado.forEach(System.out::println);
+                System.out.println("Quantidade de livros em " + categoriaSelecionado + ": " + listaLivrosIdiomaSelecionado.stream().count());
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Só vale as opções listadas no menu, tente novamente");
         }
 
     }
 
 
-
 }
+
+
+
+
